@@ -21,3 +21,10 @@ class CodeforcesHelper:
         # get the accepted submissions of the user
         submissions: list = self.get_submission(username)
         return [s for s in submissions if s['verdict'] == 'OK']
+
+
+    def get_solved_problems(self, username: str) -> list:
+        # get the solved problems of the user
+        ac_submissions: list = self.get_accepted_submissions(username)
+        ac_problems = set(s['problem']['name'] for s in ac_submissions)
+        return list(ac_problems)
