@@ -12,4 +12,6 @@ class ACMHelper:
     
     def get_online_judge_accepted_submissions(self, username: str, online_judge: str) -> list:
         # get the accepted submissions of the user from the online judge
-        return self.helper_dict[online_judge].get_accepted_submissions(username)
+        # return self.helper_dict[online_judge].get_accepted_submissions(username)
+        return self.helper_dict[online_judge].get_solved_problems(username)
+
