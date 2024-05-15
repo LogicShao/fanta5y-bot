@@ -16,6 +16,7 @@ class LuoguHelper:
         return response.json()
 
     def get_solved_problems(self, uid: str) -> list:
-        # extract the list of solved problems 
-        return self.get_data(uid)['currentData']['passedProblems']
+        # extract the list of solved problems
+        data=self.get_data(uid)
+        return data['currentData']['passedProblems'] + [data['currentData']['user']['name']]
 
