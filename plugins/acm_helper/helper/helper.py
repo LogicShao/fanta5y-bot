@@ -9,7 +9,7 @@ class ACMHelper:
         self.luogu_helper = LuoguHelper()
 
         self.helper_dict = {
-            'codeforces': self.codeforces_helper
+            'codeforces': self.codeforces_helper,
             'luogu' : self.luogu_helper
         }
     
