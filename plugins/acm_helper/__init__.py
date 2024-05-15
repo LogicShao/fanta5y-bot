@@ -25,8 +25,9 @@ acmHelper = ACMHelper()
 async def get_ac_submissions(bot, event) -> None:
     # get the username
     username = str(event.get_message()).strip().split(' ')[-1]
-    if not username:
-        await acmHelperCmd.finish("请输入用户名")
+    # 下面检测空字段的代码其实没用,但是这里想写的话可以写的东西太多了,空字段,多字段...我先注释掉了
+    '''if not username:
+        await acmHelperCmd.finish("请输入用户名")'''
     
     # get the accepted submissions from codeforces
     # ac_submissions = acmHelper.get_online_judge_accepted_submissions(username, 'codeforces')
