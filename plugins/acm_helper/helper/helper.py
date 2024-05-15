@@ -2,7 +2,6 @@ from .codeforces_helper import CodeforcesHelper
 from .luogu_helper import LuoguHelper
 
 
-
 class ACMHelper:
     def __init__(self, url: str='127.0.0.1', port: int=7890):
         # set codeforces helper
