@@ -11,10 +11,11 @@ class LuoguHelper:
         headers : dict = { 
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4331.0 Safari/537.36", 
         }
-        response: requests.Response = requests.get(url , headers = headers)
+        response: requests.Response = requests.get(url, headers=headers)
         response.raise_for_status()
         return response.json()
 
     def get_solved_problems(self, uid: str) -> list:
-        # extract the list of solved problems 
-        return self.get_data(uid)['currentData']['passedProblems']
+        # extract the list of solved problems
+        data=self.get_data(uid)
+        return data['currentData']['passedProblems']+[data['currentData']['user']['name']]
