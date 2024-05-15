@@ -29,10 +29,13 @@ async def get_ac_submissions(bot, event) -> None:
         await acmHelperCmd.finish("请输入用户名")
     
     # get the accepted submissions from codeforces
-    ac_submissions = acmHelper.get_online_judge_accepted_submissions(username, 'codeforces')
+    # ac_submissions = acmHelper.get_online_judge_accepted_submissions(username, 'codeforces')
+    solved_problems = acmHelper.get_online_judge_accepted_submissions(username, 'codeforces')
+
     
     # return the result
-    infor_str = "用户 {username} 在 codeforces 上的 AC 提交数为 {ac_num}".format(username=username, ac_num=len(ac_submissions))
+    # infor_str = "用户 {username} 在 codeforces 上的 AC 提交数为 {ac_num}".format(username=username, ac_num=len(ac_submissions))
+    infor_str = "用户 {username} 在 codeforces 上的 AC 提交数为 {ac_num}".format(username=username, ac_num=len(solved_problems))
     await acmHelperCmd.finish(infor_str)
 
 
