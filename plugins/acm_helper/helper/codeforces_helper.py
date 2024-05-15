@@ -27,3 +27,4 @@ class CodeforcesHelper:
         ac_submissions: list = self.get_accepted_submissions(username)
         ac_problems = set(s['problem']['name'] for s in ac_submissions)
         return list(ac_problems)
+

@@ -18,4 +18,5 @@ class LuoguHelper:
     def get_solved_problems(self, uid: str) -> list:
         # extract the list of solved problems
         data=self.get_data(uid)
-        return data['currentData']['passedProblems']+[data['currentData']['user']['name']]
+        return data['currentData']['passedProblems'] + [data['currentData']['user']['name']]
+
