@@ -8,7 +8,7 @@ class AcmHelper:
         # set codeforces helper
         self.codeforcesHelper = CodeforcesHelper(url, port)
         # set luogu helper
-        self.luoguHelper = LuoguHelper()
+        self.luoguHelper = LuoguHelper(url=None, port=None)
         # set the helper dictionary
         # using the online judge to get the helper
         self.helperDict = {
