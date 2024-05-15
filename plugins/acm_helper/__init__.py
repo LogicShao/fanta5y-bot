@@ -6,7 +6,7 @@ from .config import Config
 from nonebot import on_command
 from nonebot.rule import to_me
 
-from .helper.helper import ACMHelper
+from .helper.helper import AcmHelper
 
 
 # register the command
@@ -18,7 +18,7 @@ acmHelperCmd = on_command(
 )
 
 # create the helper
-acmHelper = ACMHelper()
+acmHelper = AcmHelper()
 
 # handle the command
 @acmHelperCmd.handle()
@@ -28,15 +28,12 @@ async def get_ac_submissions(bot, event) -> None:
     if not username:
         await acmHelperCmd.finish("请输入用户名")
     
-    # get the accepted submissions from codeforces
-    # ac_submissions = acmHelper.get_online_judge_accepted_submissions(username, 'codeforces')
+    # get the solved submissions from codeforces
     solved_problems = acmHelper.get_online_judge_accepted_submissions(username, 'codeforces')
 
-    
     # return the result
-    # infor_str = "用户 {username} 在 codeforces 上的 AC 提交数为 {ac_num}".format(username=username, ac_num=len(ac_submissions))
-    infor_str = "用户 {username} 在 codeforces 上的 AC 提交数为 {ac_num}".format(username=username, ac_num=len(solved_problems))
-    await acmHelperCmd.finish(infor_str)
+    info_str = "用户 {username} 在 codeforces 上的 AC 提交数为 {ac_num}".format(username=username, ac_num=len(solved_problems))
+    await acmHelperCmd.finish(info_str)
 
 
 __plugin_meta__ = PluginMetadata(
