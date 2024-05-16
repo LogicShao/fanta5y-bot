@@ -8,17 +8,13 @@ class AcmHelper:
         # set codeforces helper
         self.codeforcesHelper = CodeforcesHelper(url, port)
         # set luogu helper
-        self.luoguHelper = LuoguHelper(url=None, port=None)
+        self.luoguHelper = LuoguHelper(url, port)
         # set the helper dictionary
         # using the online judge to get the helper
         self.helperDict = {
             'codeforces': self.codeforcesHelper,
             'luogu' : self.luoguHelper
         }
-    
-    def getOnlineJudgeAcceptedSubmissions(self, username: str, onlineJudge: str) -> list:
-        # get the accepted submissions of the user from the online judge
-        return self.helperDict[onlineJudge].getSolvedProblems(username)
 
     def getUserInfo(self, username: str, onlineJudge: str) -> UserInfo:
         OJhelper = self.helperDict[onlineJudge]

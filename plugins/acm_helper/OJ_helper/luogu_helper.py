@@ -4,6 +4,7 @@ from .userinfo import UserInfo
 import requests
 
 class LuoguHelper(OJHelper):
+    # luogu API doc is here: https://www.luogu.com.cn/api
     def getData(self, uid: str) -> dict:
         # get the general data of the user
         url: str = 'https://www.luogu.com.cn/user/{uid}?_contentOnly=1'.format(uid=uid)
@@ -17,10 +18,15 @@ class LuoguHelper(OJHelper):
     def getInfo(self, uid: str) -> list:
         # extract the list of solved problems
         data = self.getData(uid)
+        # check if the user exists
+        if 'username' not in data:
+            return [None]
         # get the user info
-        # info[0] is the username
-        # info[1:] is the list of solved problems
-        info = [data['currentData']['user']['name']] + data['currentData']['passedProblems']
+        info: list = [data['username']]
+        # get the solved problems
+        solvedProblems: list = data['solvedProblems']
+        for problem in solvedProblems:
+            info.append(problem['pid'])
         return info
 
     def getSolvedProblems(self, uid: str) -> list:
@@ -29,6 +35,11 @@ class LuoguHelper(OJHelper):
     def getUserInfo(self, uid: str) -> UserInfo:
         # get the user info
         info = self.getInfo(uid)
+        # check if the user exists
+        username = info[0]
+        if username is None:
+            return UserInfo(username=None, onlineJudge='luogu')
+        
         return UserInfo(
             username=info[0],
             onlineJudge='luogu',

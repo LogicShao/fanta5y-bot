@@ -4,7 +4,7 @@ from nonebot.matcher import Matcher
 from .OJ_helper.helper import UserInfo
 
 
-# class Handler used to handle the arguments passed to the plugin
+# it using to handle the acm_helper Matcher event
 class Handler:
     def __init__(self, acmHelper: AcmHelper, matcher: Matcher, args: Optional[list[str]]=None) -> None:
         # it would accept a list of arguments which is from event.get_message()
