@@ -20,5 +20,6 @@ class AcmHelper:
         OJhelper = self.helperDict[onlineJudge]
         return OJhelper.getUserInfo(username)
     
-    def getApproachingContests(self) -> list:
-        pass
+    def getApproachingContestsInfo(self, onlineJudge: str) -> str:
+        OJhelper = self.helperDict[onlineJudge]
+        return OJhelper.getApproachingContestsInfo()

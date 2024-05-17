@@ -19,7 +19,7 @@ async def handle_message(bot, event) -> None:
     message = str(event.get_message()).lower()  # 获取消息内容
     username = event.sender.nickname
     if any(word in message for word in match_strings):
-        infor_str = ("傻逼 {username} ,这并不好笑").format(username=username)
+        infor_str = ("孩子们，特别是你 @{username}，这并不好笑").format(username=username)
         await kobe.finish(infor_str)
 
 __plugin_meta__ = PluginMetadata(

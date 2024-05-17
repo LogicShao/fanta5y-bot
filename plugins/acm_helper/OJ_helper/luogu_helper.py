@@ -33,6 +33,9 @@ class LuoguHelper(OJHelper):
         return self.getInfo(uid)[1:]
 
     def getUserInfo(self, uid: str) -> UserInfo:
+        # check the uid
+        if not uid.isdigit():
+            return '暂时只支持 uid 查询。do! 御坂如是说。'
         # get the user info
         info = self.getInfo(uid)
         # check if the user exists
@@ -45,3 +48,6 @@ class LuoguHelper(OJHelper):
             onlineJudge='luogu',
             solvedProblems=len(info[1:])
         )
+    
+    def getApproachingContestsInfo(self) -> str:
+        return '暂时没有实现 luogu 的比赛查询功能。do! 御坂抱歉说。'

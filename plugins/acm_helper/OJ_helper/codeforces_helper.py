@@ -52,7 +52,7 @@ class CodeforcesHelper(OJHelper):
                 approachingContests.append(contest)
         return approachingContests
 
-    def getApproachingContests(self, days: int=10) -> str:
+    def getApproachingContestsInfo(self, days: int=10) -> str:
         # get the approaching contests
         approachingContests: list = self.getApprochingContestsList(days=days)
         # sort the contests by start time

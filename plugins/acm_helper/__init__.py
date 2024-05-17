@@ -61,11 +61,11 @@ async def codeforcesHandle(event) -> None:
     args = str(event.get_message()).strip().split()[1:]
     # get the user info
     if len(args) != 1:
-        await codeforcesMatcher.finish("Invalid arguments")
+        await codeforcesMatcher.finish("或许你应该输入一个用户名或者向我查询比赛信息。do! 御坂如是说。")
     # handle the event
     if args[0] == 'contests':
         # get the approaching contests
-        contestsInfo: str = acmHelper.codeforcesHelper.getApproachingContests()
+        contestsInfo: str = acmHelper.codeforcesHelper.getApproachingContestsInfo()
         await codeforcesMatcher.finish(contestsInfo)
     else:
         # get the user info
@@ -79,10 +79,16 @@ async def getLuoguUserInfo(event) -> None:
     args = str(event.get_message()).strip().split()[1:]
     # get the user info
     if len(args) != 1:
-        await luoguMatcher.finish("Invalid arguments")
-    # get the user info
-    userInfo = acmHelper.luoguHelper.getUserInfo(args[0])
-    await luoguMatcher.finish(str(userInfo))
+        await luoguMatcher.finish("或许你应该输入一个用户名或者向我查询比赛信息。do! 御坂如是说。")
+    # handle the event
+    if args[0] == 'contests':
+        # get the approaching contests
+        contestsInfo: str = acmHelper.luoguHelper.getApproachingContestsInfo()
+        await luoguMatcher.finish(contestsInfo)
+    else:
+        # get the user info
+        userInfo = acmHelper.luoguHelper.getUserInfo(args[0])
+        await luoguMatcher.finish(str(userInfo))
 
 
 __plugin_meta__ = PluginMetadata(
