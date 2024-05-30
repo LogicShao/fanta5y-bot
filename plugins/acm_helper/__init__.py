@@ -20,7 +20,7 @@ acmHelperMatcher = on_command(
 
 # register the matcher: codeforces
 codeforcesMatcher = on_command(
-    "codeforces",
+    "CF",
     rule=to_me(),
     priority=10,
     block=True
