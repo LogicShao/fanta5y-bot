@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 acmhelper.env
 pyproject.toml
+launch.bat

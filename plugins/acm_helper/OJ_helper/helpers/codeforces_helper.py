@@ -1,7 +1,6 @@
 from ..infoClass.userinfo import UserInfo
 from .OJ_helper import OJHelper
 
-import requests
 import time
 
 
@@ -10,9 +9,7 @@ class CodeforcesHelper(OJHelper):
     def getSubmission(self, username: str) -> list:
         # get the submission of the user
         url: str = 'https://codeforces.com/api/user.status?handle={username}'.format(username=username)
-        response: requests.Response = requests.get(url, proxies=self.proxies)
-        response.raise_for_status()
-        data = response.json()
+        data: dict = self.handleRequest(url)
         return data['result']
     
     def getAcceptedSubmissions(self, username: str) -> list:
@@ -29,17 +26,13 @@ class CodeforcesHelper(OJHelper):
     def getRatingList(self, username: str) -> list[int]:
         # get the rating list of the user
         url: str = 'https://codeforces.com/api/user.rating?handle={username}'.format(username=username)
-        response: requests.Response = requests.get(url, proxies=self.proxies)
-        response.raise_for_status()
-        data = response.json()
+        data: dict = self.handleRequest(url)
         return [r['newRating'] for r in data['result']]
     
     def getContests(self) -> list:
         # get all contests
         url: str = 'https://codeforces.com/api/contest.list'
-        response: requests.Response = requests.get(url, proxies=self.proxies)
-        response.raise_for_status()
-        data = response.json()
+        data: dict = self.handleRequest(url)
         return data['result']
 
     def getApprochingContestsList(self, days: int=10) -> list:

@@ -4,7 +4,6 @@ from .helpers.luogu_helper import LuoguHelper
 from .helpers.nk_helper import NowCoderHelper
 
 from .infoClass.userinfo import UserInfo
-from .infoClass.contestInfo import ContestInfo
 
 from typing import Optional
 
@@ -29,6 +28,6 @@ class AcmHelper:
         OJhelper: OJHelper = self.helperDict[onlineJudge]
         return OJhelper.getUserInfo(username)
     
-    def getApproachingContestsInfo(self, onlineJudge: str) -> list[ContestInfo]:
+    def getApproachingContestsInfo(self, onlineJudge: str) -> str:
         OJhelper: OJHelper = self.helperDict[onlineJudge]
         return OJhelper.getApproachingContestsInfo()

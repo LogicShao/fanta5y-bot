@@ -9,6 +9,8 @@ from nonebot.rule import to_me
 from .OJ_helper.helper import AcmHelper
 from .handler import Handler
 
+import requests
+
 
 # load the port
 with open("acmhelper.env", "r") as f:
@@ -88,11 +90,23 @@ async def codeforcesHandle(event) -> None:
     # handle the event
     if args[0] == 'contests':
         # get the approaching contests
-        contestsInfo: str = acmHelper.codeforcesHelper.getApproachingContestsInfo()
+        try:
+            contestsInfo: str = acmHelper.codeforcesHelper.getApproachingContestsInfo()
+        except requests.Timeout:
+            await codeforcesMatcher.finish("似乎请求超时了呢，御坂感到有点困惑。")
+        except requests.RequestException as e:
+            await codeforcesMatcher.finish("请求失败，御坂发现了这个错误！{e}".format(e=e))
+
         await codeforcesMatcher.finish(contestsInfo)
     else:
         # get the user info
-        userInfo = acmHelper.codeforcesHelper.getUserInfo(args[0])
+        try:
+            userInfo = acmHelper.codeforcesHelper.getUserInfo(args[0])
+        except requests.Timeout:
+            await codeforcesMatcher.finish("似乎请求超时了呢，御坂感到有点困惑。")
+        except requests.RequestException as e:
+            await codeforcesMatcher.finish("请求失败，御坂发现了这个错误！{e}".format(e=e))
+
         await codeforcesMatcher.finish(str(userInfo))
 
 
