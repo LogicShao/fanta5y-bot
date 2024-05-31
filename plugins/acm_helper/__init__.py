@@ -10,6 +10,22 @@ from .OJ_helper.helper import AcmHelper
 from .handler import Handler
 
 
+# load the port
+with open("acmhelper.env", "r") as f:
+    file = f.readlines()
+    for line in file:
+        if line.startswith("PORT"):
+            port = line.split("=")[1].strip()
+            break
+    else:
+        port = None
+
+# check the port
+if port is not None and port.isdigit() and 0 <= int(port) <= 65535:
+    port = int(port)
+else:
+    port = None
+
 # register the matcher: acm_helper
 acmHelperMatcher = on_command(
     "acm_helper",
@@ -35,7 +51,7 @@ luoguMatcher = on_command(
 )
 
 # create the helper
-acmHelper = AcmHelper()
+acmHelper = AcmHelper(port=port)
 
 # create the handler
 handler = Handler(

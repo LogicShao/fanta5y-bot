@@ -8,7 +8,7 @@ class OJHelper(ABC):
     # the abstract class for the online judge helper
     def __init__(self, url: Optional[str]='127.0.0.1', port: Optional[int]=7890):
         # set the url and port for the proxy
-        if url is None:
+        if url is None or port is None:
             self.proxies: dict = None
         else:
             self.proxies: dict = {
