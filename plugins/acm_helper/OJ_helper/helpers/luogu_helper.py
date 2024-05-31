@@ -73,3 +73,6 @@ class LuoguHelper(OJHelper):
                 description=contest['description']
             ))
         return contests
+    
+    def getApproachingContestsInfo(self) -> str:
+        return super().getApproachingContestsInfo()
