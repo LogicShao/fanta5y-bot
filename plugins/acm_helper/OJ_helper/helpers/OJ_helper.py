@@ -1,7 +1,7 @@
 from typing import Optional
 from abc import ABC, abstractmethod
 
-from .userinfo import UserInfo
+from ..infoClass.userinfo import UserInfo
 
 
 class OJHelper(ABC):

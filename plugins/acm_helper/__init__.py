@@ -14,7 +14,7 @@ from .handler import Handler
 with open("acmhelper.env", "r") as f:
     file = f.readlines()
     for line in file:
-        if line.startswith("PORT"):
+        if line.startswith("port"):
             port = line.split("=")[1].strip()
             break
     else:
@@ -28,7 +28,7 @@ else:
 
 # register the matcher: acm_helper
 acmHelperMatcher = on_command(
-    "acm_helper",
+    "acm",
     rule=to_me(),
     priority=10,
     block=True
@@ -50,6 +50,14 @@ luoguMatcher = on_command(
     block=True
 )
 
+# register the matcher: nowcoder also nk
+nowcoderMatcher = on_command(
+    "nk",
+    rule=to_me(),
+    priority=11,
+    block=True
+)
+
 # create the helper
 acmHelper = AcmHelper(port=port)
 
@@ -58,7 +66,6 @@ handler = Handler(
     acmHelper=acmHelper,
     matcher=acmHelperMatcher
 )
-
 
 # handle the command
 @acmHelperMatcher.handle()
@@ -105,6 +112,24 @@ async def getLuoguUserInfo(event) -> None:
         # get the user info
         userInfo = acmHelper.luoguHelper.getUserInfo(args[0])
         await luoguMatcher.finish(str(userInfo))
+
+
+@nowcoderMatcher.handle()
+async def getNowCoderUserInfo(event) -> None:
+    # get the args
+    args = str(event.get_message()).strip().split()[1:]
+    # get the user info
+    if len(args) != 1:
+        await nowcoderMatcher.finish("或许你应该输入一个用户名或者向我查询比赛信息。do! 御坂如是说。")
+    # handle the event
+    if args[0] == 'contests':
+        # get the approaching contests
+        contestsInfo: str = acmHelper.nowCoderHelper.getApproachingContestsInfo()
+        await nowcoderMatcher.finish(contestsInfo)
+    else:
+        # get the user info
+        userInfo = acmHelper.nowCoderHelper.getUserInfo(args[0])
+        await nowcoderMatcher.finish(str(userInfo))
 
 
 __plugin_meta__ = PluginMetadata(

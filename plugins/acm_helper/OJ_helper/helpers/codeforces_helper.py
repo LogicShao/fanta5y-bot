@@ -1,4 +1,4 @@
-from .userinfo import UserInfo
+from ..infoClass.userinfo import UserInfo
 from .OJ_helper import OJHelper
 
 import requests

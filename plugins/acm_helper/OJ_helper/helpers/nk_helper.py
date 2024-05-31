@@ -1,15 +1,16 @@
 from .OJ_helper import OJHelper
-from .userinfo import UserInfo
+from ..infoClass.userinfo import UserInfo
 
 import requests
 
-class LuoguHelper(OJHelper):
-    # luogu API doc is here: https://www.luogu.com.cn/api
+
+class NowCoderHelper(OJHelper):
+    # NowCoder API doc is here: https://ac.nowcoder.com/help
     def getData(self, uid: str) -> dict:
         # get the general data of the user
-        url: str = 'https://www.luogu.com.cn/user/{uid}?_contentOnly=1'.format(uid=uid)
-        headers : dict = { 
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4331.0 Safari/537.36", 
+        url: str = 'https://ac.nowcoder.com/acm/contest/profile/{uid}'.format(uid=uid)
+        headers: dict = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4331.0 Safari/537.36",
         }
         response: requests.Response = requests.get(url, headers=headers, proxies=self.proxies)
         response.raise_for_status()
@@ -41,13 +42,13 @@ class LuoguHelper(OJHelper):
         # check if the user exists
         username = info[0]
         if username is None:
-            return UserInfo(username=None, onlineJudge='luogu')
-        
+            return UserInfo(username=None, onlineJudge='NowCoder')
+
         return UserInfo(
             username=info[0],
-            onlineJudge='luogu',
+            onlineJudge='NowCoder',
             solvedProblems=len(info[1:])
         )
-    
+
     def getApproachingContestsInfo(self) -> str:
-        return '暂时没有实现 luogu 的比赛查询功能。do! 御坂抱歉说。'
+        return '暂时没有实现 NowCoder 的比赛查询功能。do! 御坂抱歉说。'
