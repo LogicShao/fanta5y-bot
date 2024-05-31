@@ -19,7 +19,8 @@ class OJHelper(ABC):
             }
     
     def handleRequest(self, url: str) -> dict:
-        # handle the request to the url
+        # 处理请求 如果有必要的话
+        # 一般来说除了 codeforces 之外都不需要这种处理
         try:
             response = requests.get(url, proxies=self.proxies, timeout=10)
         except requests.Timeout:
@@ -32,8 +33,10 @@ class OJHelper(ABC):
     
     @abstractmethod
     def getUserInfo(self, username: str) -> UserInfo:
+        # 返回用户信息 UserInfo
         pass
 
     @abstractmethod
-    def getApproachingContestsInfo(self) -> str:
+    def getApproachingContestsInfo(self, days=10) -> str:
+        # 返回 days 天内即将开始的比赛信息
         pass

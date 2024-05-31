@@ -4,7 +4,7 @@ from ..infoClass.contestInfo import ContestInfo
 
 import requests
 
-class LuoguHelper(OJHelper):    
+class LuoguHelper(OJHelper):
 
     # 返回所有的用户信息 json
     def getUserData(self, uid: str) -> dict:
@@ -74,5 +74,11 @@ class LuoguHelper(OJHelper):
             ))
         return contests
     
-    def getApproachingContestsInfo(self) -> str:
-        return super().getApproachingContestsInfo()
+    def getApproachingContestsInfo(self, days=10) -> str:
+        contests: list[ContestInfo] = self.getApproachingContestsInfoList()
+        if len(contests) == 0:
+            return '暂无即将开始的比赛。do! 御坂如是说。'
+        msg: str = '{days} 天内即将开始的比赛信息：\n'.format(days=days)
+        for contest in contests:
+            msg += str(contest) + '\n'
+        return msg
