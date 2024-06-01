@@ -7,12 +7,14 @@ class UserInfo:
         onlineJudge: str,
         solvedProblems: int = 0,
         rating: Optional[int] = None,
+        rating_rank: Optional[int] = None,
         maxRating: Optional[int] = None
     ):
         self.username = username
         self.onlineJudge = onlineJudge
         self.solvedProblems = solvedProblems
         self.rating = rating
+        self.rating_rank = rating_rank
         self.maxRating = maxRating
     
     def __str__(self):
@@ -23,6 +25,8 @@ class UserInfo:
         userInfo += f'你已经解决了 {self.solvedProblems} 道题目'
         if self.rating is not None:
             userInfo += f'，你现在的 rating 是 {self.rating} 分'
+        if self.rating_rank is not None:
+            userInfo += f'，你现在的 rating排名 是 {self.rating_rank} 名'
         if self.maxRating is not None:
             userInfo += f'，你的历史最高 rating 是 {self.maxRating} 分'
         userInfo += '。'
