@@ -7,14 +7,12 @@ class ContestInfo:
     def __init__(
         self,
         oj_name: str,
-        contest_id: int,
         contest_name: str,
         start_time: int, # Unix timestamp
         end_time: int, # Unix timestamp
         description: Optional[str] = None
     ):
         self.oj_name = oj_name
-        self.contest_id = contest_id
         self.contest_name = contest_name
         self.start_time = start_time
         self.end_time = end_time

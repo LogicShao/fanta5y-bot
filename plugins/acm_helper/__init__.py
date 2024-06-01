@@ -95,7 +95,7 @@ async def codeforcesHandle(event) -> None:
         except requests.Timeout:
             await codeforcesMatcher.finish("似乎请求超时了呢，御坂感到有点困惑。")
         except requests.RequestException as e:
-            await codeforcesMatcher.finish("请求失败，御坂发现了这个错误！{e}".format(e=e))
+            await codeforcesMatcher.finish("请求失败，御坂感到抱歉...")
 
         await codeforcesMatcher.finish(contestsInfo)
     else:
@@ -105,7 +105,7 @@ async def codeforcesHandle(event) -> None:
         except requests.Timeout:
             await codeforcesMatcher.finish("似乎请求超时了呢，御坂感到有点困惑。")
         except requests.RequestException as e:
-            await codeforcesMatcher.finish("请求失败，御坂发现了这个错误！{e}".format(e=e))
+            await codeforcesMatcher.finish("请求失败，御坂感到抱歉...")
 
         await codeforcesMatcher.finish(str(userInfo))
 
