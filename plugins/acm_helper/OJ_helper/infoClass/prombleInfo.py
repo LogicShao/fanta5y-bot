@@ -15,7 +15,7 @@ class PrombleInfo:
         self.title = title
         self.difficulty = difficulty
         self.tags = tags
-    
+
     def __str__(self):
         if self.problemID is None:
             return '御坂没找到这个题目呢，你确定输入的是正确的题目ID吗？'
@@ -27,5 +27,5 @@ class PrombleInfo:
         if self.tags is not None:
             problemInfo += f'，标签是 {self.tags}'
         problemInfo += '。'
-        
+
         return problemInfo

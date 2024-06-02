@@ -5,15 +5,18 @@ from ..infoClass.contestInfo import ContestInfo
 import requests
 import time
 
+
 class LuoguHelper(OJHelper):
 
     # 返回所有的用户信息 json
     def getUserData(self, uid: str) -> dict:
-        url: str = 'https://www.luogu.com.cn/user/{uid}?_contentOnly=1'.format(uid=uid)
-        headers : dict = { 
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4331.0 Safari/537.36", 
+        url: str = 'https://www.luogu.com.cn/user/{uid}?_contentOnly=1'.format(
+            uid=uid)
+        headers: dict = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4331.0 Safari/537.36",
         }
-        response: requests.Response = requests.get(url, headers=headers, proxies=self.proxies)
+        response: requests.Response = requests.get(
+            url, headers=headers, proxies=self.proxies)
         response.raise_for_status()
         return response.json()['currentData']['user']
 
@@ -39,10 +42,11 @@ class LuoguHelper(OJHelper):
     # 获取即将开始的比赛信息
     def getApproachingContestsInfoList(self) -> list[ContestInfo]:
         url: str = 'https://www.luogu.com.cn/contest/list?_contentOnly=1'
-        headers : dict = { 
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4331.0 Safari/537.36", 
+        headers: dict = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4331.0 Safari/537.36",
         }
-        response: requests.Response = requests.get(url, headers=headers, proxies=self.proxies)
+        response: requests.Response = requests.get(
+            url, headers=headers, proxies=self.proxies)
         response.raise_for_status()
         data: dict = response.json()['currentData']
         contests: list[ContestInfo] = []
@@ -61,7 +65,7 @@ class LuoguHelper(OJHelper):
                 end_time=contest_end_time
             ))
         return contests
-    
+
     # 获取 days 天内即将开始的比赛信息
     def getApproachingContestsInfo(self, days=10) -> str:
         contests: list[ContestInfo] = sorted(list(

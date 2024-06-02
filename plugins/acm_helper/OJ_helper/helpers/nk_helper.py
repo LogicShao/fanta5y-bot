@@ -1,53 +1,54 @@
 from .OJ_helper import OJHelper
 from ..infoClass.userinfo import UserInfo
 
+from pyquery import PyQuery as pq
 import requests
 
 
 class NowCoderHelper(OJHelper):
-    # NowCoder API doc is here: https://ac.nowcoder.com/help
-    def getData(self, uid: str) -> dict:
+
+    def get_data(self, uid: str) -> str:
         # get the general data of the user
-        url: str = 'https://ac.nowcoder.com/acm/contest/profile/{uid}'.format(uid=uid)
-        headers: dict = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4331.0 Safari/537.36",
-        }
-        response: requests.Response = requests.get(url, headers=headers, proxies=self.proxies)
+        url: str = 'https://ac.nowcoder.com/acm/contest/profile/{uid}/practice-coding'.format(
+            uid=uid)
+        # 喜报, 不需要加 header(
+        response: requests.Response = requests.get(url, proxies=self.proxies)
         response.raise_for_status()
-        return response.json()
+        return response.text
 
-    def getInfo(self, uid: str) -> list:
-        # extract the list of solved problems
-        data = self.getData(uid)
-        # check if the user exists
-        if 'username' not in data:
-            return [None]
-        # get the user info
-        info: list = [data['username']]
-        # get the solved problems
-        solvedProblems: list = data['solvedProblems']
-        for problem in solvedProblems:
-            info.append(problem['pid'])
-        return info
-
-    def getSolvedProblems(self, uid: str) -> list:
-        return self.getInfo(uid)[1:]
+    def gatgatInfo(self, uid: str) -> dict:
+        doc = pq(self.get_data(uid)) # pq是pyquery的一个函数，用于解析html文档
+        data = {}  # 写完才发现data其实是字典...本来是按列表写的
+        # data 格式 [username, rating, rating_rank, solvedProblems], 均为字符串
+        data['username'] = doc(
+            '.coder-info-detail .coder-name').text()  # 用户名, 查找不到返回空字符串
+        if data['username'] == '':
+            return {'username': None}
+        data['rating'] = doc(
+            '.nk-container .status-item .state-num').text()  # Rating
+        data['rating_rank'] = [i for i in doc(
+            '.nk-container .status-item').items()][1].text()[:-9]  # Rating 排名
+        data['solvedProblems'] = [i for i in doc(
+            '.nk-main .my-state-main .my-state-item .state-num').items()][1].text()  # 解出的题目数
+        return data
 
     def getUserInfo(self, uid: str) -> UserInfo:
         # check the uid
         if not uid.isdigit():
             return '暂时只支持 uid 查询。do! 御坂如是说。'
         # get the user info
-        info = self.getInfo(uid)
+        info = self.gatgatInfo(uid)
         # check if the user exists
-        username = info[0]
+        username = info['username']
         if username is None:
             return UserInfo(username=None, onlineJudge='NowCoder')
 
         return UserInfo(
-            username=info[0],
+            username=info['username'],
             onlineJudge='NowCoder',
-            solvedProblems=len(info[1:])
+            rating=int(info['rating']),
+            rating_rank=int(info['rating_rank']),
+            solvedProblems=int(info['solvedProblems']),
         )
 
     def getApproachingContestsInfo(self) -> str:

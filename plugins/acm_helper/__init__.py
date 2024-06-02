@@ -69,8 +69,8 @@ handler = Handler(
     matcher=acmHelperMatcher
 )
 
-# handle the command
-@acmHelperMatcher.handle()
+
+@acmHelperMatcher.handle()  # handle the command
 async def acmHandle(event) -> None:
     # create the handler
     handler.updateArgs(str(event.get_message()).strip().split())
@@ -154,4 +154,3 @@ __plugin_meta__ = PluginMetadata(
 )
 
 config = get_plugin_config(Config)
-
