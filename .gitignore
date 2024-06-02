@@ -1,5 +1,4 @@
 data/
-**/pycache/
 __pycache__/
 *.pyc
 acmhelper.env

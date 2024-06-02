@@ -1,5 +1,6 @@
 from typing import Optional
 
+
 class UserInfo:
     def __init__(
         self,
@@ -16,7 +17,7 @@ class UserInfo:
         self.rating = rating
         self.rating_rank = rating_rank
         self.maxRating = maxRating
-    
+
     def __str__(self):
         if self.username is None:
             return '御坂没找到这个用户呢，你确定输入的是正确的用户名吗？'
@@ -30,5 +31,5 @@ class UserInfo:
         if self.maxRating is not None:
             userInfo += f'，你的历史最高 rating 是 {self.maxRating} 分'
         userInfo += '。'
-        
+
         return userInfo
