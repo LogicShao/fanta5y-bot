@@ -8,7 +8,7 @@ from nonebot.rule import to_me
 
 
 self_intro = on_command(
-    "自我介绍",
+    "whoami",
     rule=to_me(),
     aliases={"自我介绍", "介绍自己"},
     priority=10,

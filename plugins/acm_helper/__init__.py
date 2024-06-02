@@ -6,58 +6,144 @@ from .config import Config
 from nonebot import on_command
 from nonebot.rule import to_me
 
-from .helper.helper import AcmHelper
+from .OJ_helper.helper import AcmHelper
+from .handler import Handler
+
+import requests
 
 
-# register the command
-codeforcesHelperCmd = on_command(
-    "codeforces",
+# load the port
+with open("acmhelper.env", "r") as f:
+    file = f.readlines()
+    for line in file:
+        if line.startswith("port"):
+            port = line.split("=")[1].strip()
+            break
+    else:
+        port = None
+
+# check the port
+if port is not None and port.isdigit() and 0 <= int(port) <= 65535:
+    port = int(port)
+else:
+    port = None
+
+# register the matcher: acm_helper
+acmHelperMatcher = on_command(
+    "acm",
     rule=to_me(),
     priority=10,
     block=True
 )
 
-luoguHelperCmd = on_command(
+# register the matcher: codeforces
+codeforcesMatcher = on_command(
+    "CF",
+    rule=to_me(),
+    priority=10,
+    block=True
+)
+
+# register the matcher: luogu
+luoguMatcher = on_command(
     "luogu",
     rule=to_me(),
     priority=11,
     block=True
 )
 
+# register the matcher: nowcoder also nk
+nowcoderMatcher = on_command(
+    "nk",
+    rule=to_me(),
+    priority=11,
+    block=True
+)
+
 # create the helper
-acmHelper = AcmHelper()
+acmHelper = AcmHelper(port=port)
+
+# create the handler
+handler = Handler(
+    acmHelper=acmHelper,
+    matcher=acmHelperMatcher
+)
 
 # handle the command
-@codeforcesHelperCmd.handle()
-async def get_ac_submissions(bot, event) -> None:
-    # get the username
-    username = str(event.get_message()).strip().split(' ')[-1]
-    # 下面检测空字段的代码其实没用,但是这里想写的话可以写的东西太多了,空字段,多字段...我先注释掉了
-    '''if not username:
-        await acmHelperCmd.finish("请输入用户名")'''
-    
-    # get the solved submissions from codeforces
-    solved_problems = acmHelper.get_online_judge_accepted_submissions(username, 'codeforces')
+@acmHelperMatcher.handle()
+async def acmHandle(event) -> None:
+    # create the handler
+    handler.updateArgs(str(event.get_message()).strip().split())
 
-    # return the result
-    # infor_str = "用户 {username} 在 codeforces 上的 AC 提交数为 {ac_num}".format(username=username, ac_num=len(ac_submissions))
-    infor_str = "用户 {username} 在 codeforces 上的 AC 提交数为 {ac_num}".format(username=username, ac_num=len(solved_problems))
-    await codeforcesHelperCmd.finish(infor_str)
+    # handle the event
+    await handler.handle()
 
-@luoguHelperCmd.handle()
-async def get_ac_submissions(bot, event) -> None:
-    # get the username
-    uid = str(event.get_message()).strip().split(' ')[-1]
-    
-    # get the accepted submissions from codeforces
-    # ac_submissions = acmHelper.get_online_judge_accepted_submissions(uid, 'luogu')
-    solved_problems = acmHelper.get_online_judge_accepted_submissions(uid, 'luogu')
-    username = solved_problems[-1]
-    
-    # return the result
-    # infor_str = "用户 {username} 在 洛谷 上做出的题目数为 {ac_num}".format(username=username, ac_num=len(ac_submissions))
-    infor_str = "用户 {username} 在 洛谷 上做出的题目数为 {ac_num}".format(username=username, ac_num=len(solved_problems)-1)
-    await luoguHelperCmd.finish(infor_str)
+
+# handle the command
+@codeforcesMatcher.handle()
+async def codeforcesHandle(event) -> None:
+    # get the args
+    args = str(event.get_message()).strip().split()[1:]
+    # get the user info
+    if len(args) != 1:
+        await codeforcesMatcher.finish("或许你应该输入一个用户名或者向我查询比赛信息。do! 御坂如是说。")
+    # handle the event
+    if args[0] == 'contests':
+        # get the approaching contests
+        try:
+            contestsInfo: str = acmHelper.codeforcesHelper.getApproachingContestsInfo()
+        except requests.Timeout:
+            await codeforcesMatcher.finish("似乎请求超时了呢，御坂感到有点困惑。")
+        except requests.RequestException as e:
+            await codeforcesMatcher.finish("请求失败，御坂感到抱歉...")
+
+        await codeforcesMatcher.finish(contestsInfo)
+    else:
+        # get the user info
+        try:
+            userInfo = acmHelper.codeforcesHelper.getUserInfo(args[0])
+        except requests.Timeout:
+            await codeforcesMatcher.finish("似乎请求超时了呢，御坂感到有点困惑。")
+        except requests.RequestException as e:
+            await codeforcesMatcher.finish("请求失败，御坂感到抱歉...")
+
+        await codeforcesMatcher.finish(str(userInfo))
+
+
+@luoguMatcher.handle()
+async def getLuoguUserInfo(event) -> None:
+    # get the args
+    args = str(event.get_message()).strip().split()[1:]
+    # get the user info
+    if len(args) != 1:
+        await luoguMatcher.finish("或许你应该输入一个用户名或者向我查询比赛信息。do! 御坂如是说。")
+    # handle the event
+    if args[0] == 'contests':
+        # get the approaching contests
+        contestsInfo: str = acmHelper.luoguHelper.getApproachingContestsInfo()
+        await luoguMatcher.finish(contestsInfo)
+    else:
+        # get the user info
+        userInfo = acmHelper.luoguHelper.getUserInfo(args[0])
+        await luoguMatcher.finish(str(userInfo))
+
+
+@nowcoderMatcher.handle()
+async def getNowCoderUserInfo(event) -> None:
+    # get the args
+    args = str(event.get_message()).strip().split()[1:]
+    # get the user info
+    if len(args) != 1:
+        await nowcoderMatcher.finish("或许你应该输入一个用户名或者向我查询比赛信息。do! 御坂如是说。")
+    # handle the event
+    if args[0] == 'contests':
+        # get the approaching contests
+        contestsInfo: str = acmHelper.nowCoderHelper.getApproachingContestsInfo()
+        await nowcoderMatcher.finish(contestsInfo)
+    else:
+        # get the user info
+        userInfo = acmHelper.nowCoderHelper.getUserInfo(args[0])
+        await nowcoderMatcher.finish(str(userInfo))
 
 
 __plugin_meta__ = PluginMetadata(
