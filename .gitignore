@@ -4,3 +4,5 @@ __pycache__/
 acmhelper.env
 pyproject.toml
 launch.bat
+.vscode/
+bot.py

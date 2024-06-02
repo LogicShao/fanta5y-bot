@@ -1,12 +1,13 @@
-from .OJ_helper.helper import AcmHelper
 from typing import Optional
-from nonebot.matcher import Matcher
-from .OJ_helper.helper import UserInfo
+
+from .OJ_helper import AcmHelper
+from .OJ_helper import UserInfo
+from .OJ_helper import ContestInfo
 
 
 # it using to handle the acm_helper Matcher event
 class Handler:
-    def __init__(self, acmHelper: AcmHelper, matcher: Matcher, args: Optional[list[str]] = None) -> None:
+    def __init__(self, acmHelper: AcmHelper, matcher, args: Optional[list[str]] = None) -> None:
         # it would accept a list of arguments which is from event.get_message()
         # and store it in self.args
         # the args will remove the first element which is the command itself
@@ -39,14 +40,11 @@ class Handler:
 
         await self.matcher.finish(str(userInfo))
 
-    async def handleContests(self) -> None:
-        # handle the contests
-        # if the arguments are invalid, return "Invalid arguments"
-        if self.cntArgs != 0:
-            await self.matcher.finish("Invalid arguments")
-
-        contests: list = self.acmHelper.getApproachingContests()
-        await self.matcher.finish(str(contests))
+    async def handleContests(self, days: int = 10) -> None:
+        contestInfo: list[ContestInfo] = self.acmHelper.getApproachingContests()
+        msg: str = '{days} 天内即将开始的比赛信息：\n'.format(days=days)
+        msg += '\n'.join(map(str, contestInfo))
+        await self.matcher.finish(msg)
 
     async def handle(self) -> None:
         # handle the arguments and return the result

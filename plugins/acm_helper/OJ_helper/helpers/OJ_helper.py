@@ -2,6 +2,7 @@ from typing import Optional
 from abc import ABC, abstractmethod
 
 from ..infoClass import UserInfo
+from ..infoClass import ContestInfo
 
 import requests
 
@@ -11,9 +12,9 @@ class OJHelper(ABC):
     def __init__(self, url: Optional[str] = '127.0.0.1', port: Optional[int] = 7890):
         # set the url and port for the proxy
         if url is None or port is None:
-            self.proxies: dict = None
+            self.proxies: Optional[dict] = None
         else:
-            self.proxies: dict = {
+            self.proxies: Optional[dict] = {
                 'http': 'http://{url}:{port}'.format(url=url, port=port),
                 'https': 'http://{url}:{port}'.format(url=url, port=port),
             }
@@ -39,6 +40,11 @@ class OJHelper(ABC):
         pass
 
     @abstractmethod
-    def getApproachingContestsInfo(self, days=10) -> str:
+    def getApproachingContestsInfo(self, days: int = 10) -> str:
         # 返回 days 天内即将开始的比赛信息
+        pass
+
+    @abstractmethod
+    def getApproachingContestsList(self, days: int = 10) -> list[ContestInfo]:
+        # 返回即将开始的比赛信息
         pass

@@ -1,5 +1,6 @@
 from .OJ_helper import OJHelper
-from ..infoClass import UserInfo
+from .OJ_helper import UserInfo
+from .OJ_helper import ContestInfo
 
 from pyquery import PyQuery as pq
 import requests
@@ -35,13 +36,13 @@ class NowCoderHelper(OJHelper):
     def getUserInfo(self, uid: str) -> UserInfo:
         # check the uid
         if not uid.isdigit():
-            return '暂时只支持 uid 查询。do! 御坂如是说。'
+            return UserInfo(error='暂时只支持 uid 查询。do! 御坂如是说。')
         # get the user info
         info = self.gatgatInfo(uid)
         # check if the user exists
         username = info['username']
         if username is None:
-            return UserInfo(username=None, onlineJudge='NowCoder')
+            return UserInfo(error='用户不存在。do! 御坂如是说。')
 
         return UserInfo(
             username=info['username'],
@@ -50,6 +51,9 @@ class NowCoderHelper(OJHelper):
             rating_rank=int(info['rating_rank']),
             solvedProblems=int(info['solvedProblems']),
         )
+    
+    def getApproachingContestsList(self) -> list[ContestInfo]:
+        return [ContestInfo(error='暂时没有实现 NowCoder 的比赛查询功能。do! 御坂抱歉说。')]
 
     def getApproachingContestsInfo(self) -> str:
         return '暂时没有实现 NowCoder 的比赛查询功能。do! 御坂抱歉说。'

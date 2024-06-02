@@ -6,19 +6,23 @@ import time
 class ContestInfo:
     def __init__(
         self,
-        oj_name: str,
-        contest_name: str,
-        start_time: int,  # Unix timestamp
-        end_time: int,  # Unix timestamp
-        description: Optional[str] = None
+        oj_name: Optional[str] = None,
+        contest_name: Optional[str] = None,
+        start_time: int = 0,  # Unix timestamp
+        end_time: int = 0,  # Unix timestamp
+        error: Optional[str] = None,
     ):
         self.oj_name = oj_name
         self.contest_name = contest_name
         self.start_time = start_time
         self.end_time = end_time
-        self.description = description
+        self.duration = end_time - start_time
+        self.error = error
 
     def __str__(self):
+        if self.error is not None:
+            return self.error
+
         month, day, hour, minute = time.strftime(
             '%m %d %H %M', time.localtime(self.start_time)).split()
         duration: str = time.strftime(

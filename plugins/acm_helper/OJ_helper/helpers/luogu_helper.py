@@ -1,6 +1,6 @@
 from .OJ_helper import OJHelper
-from ..infoClass import UserInfo
-from ..infoClass import ContestInfo
+from .OJ_helper import UserInfo
+from .OJ_helper import ContestInfo
 
 import requests
 import time
@@ -24,10 +24,10 @@ class LuoguHelper(OJHelper):
     def getUserInfo(self, uid: str) -> UserInfo:
         # check the uid
         if not uid.isdigit():
-            return '暂时只支持 uid 查询。do! 御坂如是说。'
+            return UserInfo(error='暂时只支持 uid 查询。do! 御坂如是说。')
         data: dict = self.getUserData(uid)
         if 'code' in data and data['code'] == 404:
-            return '用户不存在。do! 御坂如是说。'
+            return UserInfo(error='用户不存在。do! 御坂如是说。')
         # get user name
         user_name: str = data['name']
         # get solved problems
@@ -40,7 +40,7 @@ class LuoguHelper(OJHelper):
         return user
 
     # 获取即将开始的比赛信息
-    def getApproachingContestsInfoList(self) -> list[ContestInfo]:
+    def getApproachingContestsList(self) -> list[ContestInfo]:
         url: str = 'https://www.luogu.com.cn/contest/list?_contentOnly=1'
         headers: dict = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4331.0 Safari/537.36",
@@ -70,13 +70,12 @@ class LuoguHelper(OJHelper):
     def getApproachingContestsInfo(self, days=10) -> str:
         contests: list[ContestInfo] = sorted(list(
             filter(lambda contest: contest.start_time < time.time() + days * 24 * 60 * 60,
-                   self.getApproachingContestsInfoList())
+                   self.getApproachingContestsList())
         ))
 
         if len(contests) == 0:
             return '暂无即将开始的比赛。do! 御坂如是说。'
 
         msg: str = '{days} 天内即将开始的比赛信息：\n'.format(days=days)
-        for contest in contests:
-            msg += str(contest) + '\n'
+        msg += ''.join(map(str, contests))
         return msg
