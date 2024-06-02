@@ -1,9 +1,9 @@
-from .helpers.OJ_helper import OJHelper
-from .helpers.codeforces_helper import CodeforcesHelper
-from .helpers.luogu_helper import LuoguHelper
-from .helpers.nk_helper import NowCoderHelper
+from .helpers import OJHelper
+from .helpers import CodeforcesHelper
+from .helpers import LuoguHelper
+from .helpers import NowCoderHelper
 
-from .infoClass.userinfo import UserInfo
+from .infoClass import UserInfo
 
 from typing import Optional
 

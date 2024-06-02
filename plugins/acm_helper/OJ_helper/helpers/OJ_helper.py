@@ -1,7 +1,7 @@
 from typing import Optional
 from abc import ABC, abstractmethod
 
-from ..infoClass.userinfo import UserInfo
+from ..infoClass import UserInfo
 
 import requests
 

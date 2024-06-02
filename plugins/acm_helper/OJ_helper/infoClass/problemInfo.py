@@ -1,7 +1,7 @@
 from typing import Optional
 
 
-class PrombleInfo:
+class ProblemInfo:
     def __init__(
         self,
         problemID: Optional[str],

@@ -1,6 +1,6 @@
 from .OJ_helper import OJHelper
-from ..infoClass.userinfo import UserInfo
-from ..infoClass.contestInfo import ContestInfo
+from ..infoClass import UserInfo
+from ..infoClass import ContestInfo
 
 import requests
 import time

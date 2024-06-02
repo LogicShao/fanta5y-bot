@@ -1,4 +1,4 @@
-from ..infoClass.userinfo import UserInfo
+from ..infoClass import UserInfo
 from .OJ_helper import OJHelper
 
 import time

@@ -1,5 +1,5 @@
 from .OJ_helper import OJHelper
-from ..infoClass.userinfo import UserInfo
+from ..infoClass import UserInfo
 
 from pyquery import PyQuery as pq
 import requests

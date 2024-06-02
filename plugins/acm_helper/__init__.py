@@ -6,7 +6,7 @@ from .config import Config
 from nonebot import on_command
 from nonebot.rule import to_me
 
-from .OJ_helper.helper import AcmHelper
+from .OJ_helper import AcmHelper
 from .handler import Handler
 
 import requests
