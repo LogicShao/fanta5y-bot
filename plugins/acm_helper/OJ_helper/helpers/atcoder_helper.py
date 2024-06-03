@@ -15,7 +15,7 @@ class NowCoderHelper(OJHelper):
         # get the general data of the user
         url: str = 'https://atcoder.jp/users/{username}'.format(
             username=username)
-        # 国外网站, 这里暂且加上 proxy
+        # 国外网站, 这里加上 proxy
         response = get(url, proxies=self.proxies)
         response.raise_for_status()
         return response.text
@@ -49,7 +49,7 @@ class NowCoderHelper(OJHelper):
         return timedelta(hours=hours, minutes=minutes)
 
     def getApproachingContestsList(self) -> list[ContestInfo]:
-        return [ContestInfo(error='暂时没有实现 NowCoder 的比赛查询功能。do! 御坂抱歉说。')]
+        return [ContestInfo(error='暂时没有实现 AtCoder 的比赛查询功能。do! 御坂抱歉说。')]
 
     def gechapoints(self, days: int) -> list[ContestInfo]:
         doc = pq(get(
