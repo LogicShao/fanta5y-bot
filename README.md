@@ -1,29 +1,41 @@
-# test
+# fanta5y-bot
 
-## Set the acmhelper proxy
+## ACM Helper Configuration Guide
 
-create the `acmhelper.env` and write
+### Setting the ACM Helper Proxy
+
+1. Create a file named `acmhelper.env`.
+2. Add the following line to the file:
 
 ```
 port={Your port}
 ```
 
-if **not** set, it would **NOT** use the system proxy
+If this is not set, the system proxy will **not** be used.
 
-## Set environment for acmhelper
+### Configuring the Environment for ACM Helper
 
-use `python \myScript\setEnv.py` to set the environment, or just write the `port={Your system proxy port}` to the `acmhelper.env`.
+- To set the environment, you can either run the script:
 
-if you choose to run loacl, it means not to link to qq, and load a console, else it would try to link your qq server, may be Lagrange.
+```
+python \myScript\setEnv.py
+```
 
-## How to use nb-cli
+or directly add the following line to the `acmhelper.env` file:
 
-1. generate project using `nb create` .
-2. install plugins using `nb plugin install` .
-3. run your bot using `nb run` .
+```
+port={Your system proxy port}
+```
 
-use `nb run` to run the bot.
+- If you choose to run locally, it will not link to QQ and will load a console. Otherwise, it will attempt to connect to your QQ server, which might be Lagrange.
+
+## Using nb-cli
+
+1. Generate a project using: `nb create`
+2. Install plugins using: `nb plugin install`
+3. Run your bot using: `nb run`
+
 
 ## Documentation
 
-See [Docs](https://nonebot.dev/)
+For more detailed information, please refer to the [NoneBot Documentation](https://nonebot.dev/).

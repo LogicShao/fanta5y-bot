@@ -6,7 +6,7 @@ from .config import Config
 from nonebot import on_command
 from nonebot.rule import to_me
 
-from .OJ_helper.helper import AcmHelper
+from .OJ_helper import AcmHelper
 from .handler import Handler
 
 import requests
@@ -27,6 +27,7 @@ if port is not None and port.isdigit() and 0 <= int(port) <= 65535:
     port = int(port)
 else:
     port = None
+
 
 # register the matcher: acm_helper
 acmHelperMatcher = on_command(
@@ -69,8 +70,8 @@ handler = Handler(
     matcher=acmHelperMatcher
 )
 
-# handle the command
-@acmHelperMatcher.handle()
+
+@acmHelperMatcher.handle()  # handle the command
 async def acmHandle(event) -> None:
     # create the handler
     handler.updateArgs(str(event.get_message()).strip().split())
@@ -154,4 +155,3 @@ __plugin_meta__ = PluginMetadata(
 )
 
 config = get_plugin_config(Config)
-

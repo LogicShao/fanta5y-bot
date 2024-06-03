@@ -15,9 +15,11 @@ self_intro = on_command(
     block=True
 )
 
+
 async def get_self_intro():
     infor_str = "我是御坂0x3f3f3f3f号，一个不存在的御坂妹。我的主人是@Eternal_Fanta5y。"
     return infor_str
+
 
 @self_intro.handle()
 async def handle_function():
@@ -32,4 +34,3 @@ __plugin_meta__ = PluginMetadata(
 )
 
 config = get_plugin_config(Config)
-
