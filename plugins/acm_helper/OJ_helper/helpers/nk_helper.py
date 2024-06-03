@@ -53,14 +53,15 @@ class NowCoderHelper(OJHelper):
             solvedProblems=int(info['solvedProblems']),
         )
 
-    def getApproachingContestsList(self) -> list[ContestInfo]:
-        return [ContestInfo(error='暂时没有实现 NowCoder 的比赛查询功能。do! 御坂抱歉说。')]
-
     def gechapoints(self, days: int) -> list[ContestInfo]:
         doc1 = pq(requests.get(
-            'https://ac.nowcoder.com/acm/contest/vip-index').text)
+            url='https://ac.nowcoder.com/acm/contest/vip-index',
+            proxies=self.proxies
+        ).text)
         doc2 = pq(requests.get(
-            'https://ac.nowcoder.com/acm/contest/vip-index?topCategoryFilter=14').text)
+            url='https://ac.nowcoder.com/acm/contest/vip-index?topCategoryFilter=14',
+            proxies=self.proxies
+        ).text)
         contests = [i.text() for i in [i for i in doc1('.platform-mod.js-current .platform-item-main .btn.btn-primary.btn-xxs').siblings().items()][:len([i for i in doc1('.platform-mod.js-current .platform-item-main .btn.btn-primary.btn-xxs').items()])]] + \
             [i.text() for i in [i for i in doc2('.platform-mod.js-current .platform-item-main .btn.btn-primary.btn-xxs').siblings().items()]
              [:len([i for i in doc2('.platform-mod.js-current .platform-item-main .btn.btn-primary.btn-xxs').items()])]]
@@ -71,22 +72,26 @@ class NowCoderHelper(OJHelper):
         for i in range(len(times)):
             startInfo, endInfo = times[i].split(  # type: ignore
                 '： ')[1].split(' 至 ')[:2]
-            start_time: datetime = datetime.strptime(startInfo, '%Y-%m-%d %H:%M')
+            start_time: datetime = datetime.strptime(
+                startInfo, '%Y-%m-%d %H:%M')
             # 移除 endInfo 结尾的 "(时长:x小时)"
             endInfo = endInfo.split(' (', 1)[0]
             end_time: datetime = datetime.strptime(endInfo, '%Y-%m-%d %H:%M')
-            
+
             dist: int = (start_time - datetime.now()).days
             if dist < 0 or dist > days:
                 continue
 
             data.append(ContestInfo(
                 oj_name='牛客',
-                contest_name=contests[i], # type: ignore
+                contest_name=contests[i],  # type: ignore
                 start_time=int(start_time.timestamp()),
                 end_time=int(end_time.timestamp())
             ))
         return data
+
+    def getApproachingContestsList(self, days: int = 10) -> list[ContestInfo]:
+        return self.gechapoints(days=days)
 
     def getApproachingContestsInfo(self, days: int = 10) -> str:
         data = self.gechapoints(days)
@@ -95,10 +100,8 @@ class NowCoderHelper(OJHelper):
 
         msg = 'nk {days} 天内即将的比赛有 {cnt} 场：\n'.format(
             days=days, cnt=len(data))
-        
+
         msg += '\n'.join(map(str, data))
-        
+
         # 移除最后一个换行符
-        if len(data) > 0 and msg[-1] == '\n':
-            msg = msg[:-1]
-        return msg
+        return msg.removesuffix('\n')

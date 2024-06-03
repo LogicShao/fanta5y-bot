@@ -78,4 +78,6 @@ class LuoguHelper(OJHelper):
 
         msg: str = '{days} 天内即将开始的比赛信息：\n'.format(days=days)
         msg += ''.join(map(str, contests))
-        return msg
+
+        # 移除最后一个换行符
+        return msg.removesuffix('\n')

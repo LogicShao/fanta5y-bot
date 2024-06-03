@@ -76,10 +76,11 @@ class CodeforcesHelper(OJHelper):
                     minute=minute,
                     duration=duration,
                 )
-            
-            if i < len(approachingContests) - 1:
+
+            if i != len(approachingContests) - 1:
                 msg += '\n'
-        return msg
+        
+        return msg.removesuffix('\n')
 
     def getUserInfo(self, username: str) -> UserInfo:
         # get the user information

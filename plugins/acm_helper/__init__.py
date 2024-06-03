@@ -61,6 +61,14 @@ nowcoderMatcher = on_command(
     block=True
 )
 
+# register the matcher: atcoder
+atcoderMatcher = on_command(
+    "atc",
+    rule=to_me(),
+    priority=11,
+    block=True
+)
+
 # create the helper
 acmHelper = AcmHelper(port=port)
 
@@ -145,6 +153,24 @@ async def getNowCoderUserInfo(event) -> None:
         # get the user info
         userInfo = acmHelper.nowCoderHelper.getUserInfo(args[0])
         await nowcoderMatcher.finish(str(userInfo))
+
+
+@atcoderMatcher.handle()
+async def getAtCoderUserInfo(event) -> None:
+    # get the args
+    args = str(event.get_message()).strip().split()[1:]
+    # get the user info
+    if len(args) != 1:
+        await atcoderMatcher.finish("或许你应该输入一个用户名或者向我查询比赛信息。do! 御坂如是说。")
+    # handle the event
+    if args[0] == 'contests':
+        # get the approaching contests
+        contestsInfo: str = acmHelper.atCoderHelper.getApproachingContestsInfo().removesuffix('\n')
+        await atcoderMatcher.finish(contestsInfo)
+    else:
+        # get the user info
+        userInfo = acmHelper.atCoderHelper.getUserInfo(args[0])
+        await atcoderMatcher.finish(str(userInfo))
 
 
 __plugin_meta__ = PluginMetadata(

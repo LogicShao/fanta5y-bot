@@ -44,7 +44,7 @@ class Handler:
         contestInfo: list[ContestInfo] = self.acmHelper.getApproachingContests()
         msg: str = '{days} 天内即将开始的比赛信息：\n'.format(days=days)
         msg += '\n'.join(map(str, contestInfo))
-        await self.matcher.finish(msg)
+        await self.matcher.finish(msg.removesuffix('\n'))
 
     async def handle(self) -> None:
         # handle the arguments and return the result
