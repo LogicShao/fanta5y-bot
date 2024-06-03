@@ -81,7 +81,7 @@ class NowCoderHelper(OJHelper):
         if len(data) == 0:
             return '暂时没有即将开始的比赛。do! 御坂如是说。'
 
-        msg = 'nk {days} 天内即将的比赛有 {cnt} 场：\n'.format(
+        msg = 'AtCoder {days} 天内即将的比赛有 {cnt} 场：\n'.format(
             days=days, cnt=len(data))
         
         msg += '\n'.join(map(str, data))
