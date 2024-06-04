@@ -8,7 +8,7 @@ from .infoClass import UserInfo
 from .infoClass import ContestInfo
 
 from typing import Optional
-from functools import reduce
+import requests
 
 
 class AcmHelper:
@@ -42,13 +42,16 @@ class AcmHelper:
         OJhelper: OJHelper = self.helperDict[onlineJudge]
         return OJhelper.getApproachingContestsInfo()
 
-    def getApproachingContests(self) -> list[ContestInfo]:
+    def getApproachingContests(self, days: int = 10) -> list[ContestInfo]:
         contests: list[ContestInfo] = []
         for helper in self.helperDict.values():
-            contests.extend(
-                filter(
-                    lambda contest: contest.error is None,
-                    helper.getApproachingContestsList()
-                )
-            )
+            try:
+                contestsList: list[ContestInfo] = helper.getApproachingContestsList(days=days)
+            except requests.Timeout:
+                continue
+            except requests.RequestException as e:
+                continue
+
+            contests.extend(filter(lambda contest: contest.error is None,
+                                   contestsList))
         return sorted(contests)

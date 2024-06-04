@@ -40,7 +40,7 @@ class LuoguHelper(OJHelper):
         return user
 
     # 获取即将开始的比赛信息
-    def getApproachingContestsList(self) -> list[ContestInfo]:
+    def getApproachingContestsList(self, days: int = 10) -> list[ContestInfo]:
         url: str = 'https://www.luogu.com.cn/contest/list?_contentOnly=1'
         headers: dict = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4331.0 Safari/537.36",
@@ -55,7 +55,7 @@ class LuoguHelper(OJHelper):
             contest_start_time: int = contest['startTime']
             contest_end_time: int = contest['endTime']
 
-            if contest_start_time < time.time():
+            if contest_start_time < time.time() or contest_start_time > time.time() + days * 24 * 60 * 60:
                 continue
 
             contests.append(ContestInfo(
@@ -64,15 +64,12 @@ class LuoguHelper(OJHelper):
                 start_time=contest_start_time,
                 end_time=contest_end_time
             ))
-        return contests
+        return sorted(contests)
 
     # 获取 days 天内即将开始的比赛信息
     def getApproachingContestsInfo(self, days=10) -> str:
-        contests: list[ContestInfo] = sorted(list(
-            filter(lambda contest: contest.start_time < time.time() + days * 24 * 60 * 60,
-                   self.getApproachingContestsList())
-        ))
-
+        contests: list[ContestInfo] = self.getApproachingContestsList(days=days)
+        
         if len(contests) == 0:
             return '暂无即将开始的比赛。do! 御坂如是说。'
 
